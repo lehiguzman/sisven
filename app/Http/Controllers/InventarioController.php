@@ -4,18 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Producto;
+use App\Inventario;
 
-class ProductoController extends Controller
+class InventarioController extends Controller
 {
-    /**
+   /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $productos = Producto::orderBy('ID', 'DESC')->paginate();
-        return view('producto.index', compact('productos'));
+        $inventarios = Inventario::orderBy('ID', 'DESC')->paginate();
+        return view('inventario.index', compact('inventarios'));
     }
 
     /**
@@ -25,7 +26,7 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        return view('producto.create');
+        return view('inventario.create');
     }
 
     /**
@@ -38,10 +39,11 @@ class ProductoController extends Controller
     {
           $data = $request;
 
-                Producto::create([
-                    'nombre' => $data['nombre']                    
+                Inventario::create([
+                    'producto_id' => $data['producto_id'],
+                    'cantidad' => $data['cantidad']
                 ]);
-        return redirect()->route('productos.index')->with('message', 'Producto agregado exitosamente');
+        return redirect()->route('inventarios.index')->with('message', 'Inventario agregado exitosamente');
     }
 
     /**
@@ -52,8 +54,8 @@ class ProductoController extends Controller
      */
     public function show($id)
     {
-        $producto = Producto::find($id);
-        return view('producto.show', compact('producto'));
+        $inventario = Producto::find($id);
+        return view('inventario.show', compact('inventario'));
     }
 
     /**
@@ -64,8 +66,8 @@ class ProductoController extends Controller
      */
     public function edit($id)
     {
-        $producto = Producto::find($id);
-        return view('producto.edit', compact('producto'));  
+        $inventario = Inventario::find($id);
+        return view('inventario.edit', compact('inventario'));  
     }
 
     /**
@@ -77,14 +79,14 @@ class ProductoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $producto = Producto::find($id);
+        $inventario = Inventario::find($id);
         
-        if($producto)
-        {
-            $producto->nombre = $request->nombre;            
-            $producto->save();         
+        if($inventario)
+        {            
+            $inventario->cantidad = $request->cantidad;            
+            $inventario->save();         
         }
-        return redirect()->route('productos.index')->with('message', 'Producto actualizado exitosamente');    
+        return redirect()->route('inventarios.index')->with('message', 'Inventario actualizado exitosamente');    
     }
 
     /**
@@ -95,7 +97,7 @@ class ProductoController extends Controller
      */
     public function destroy($id)
     {
-        Producto::destroy($id);
-        return redirect()->route('productos.index')->with('message', 'Producto eliminado exitosamente');      
+        Inventario::destroy($id);
+        return redirect()->route('inventarios.index')->with('message', 'Inventario eliminado exitosamente');      
     }    
 }
