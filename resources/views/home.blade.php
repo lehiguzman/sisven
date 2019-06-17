@@ -23,6 +23,7 @@
   <!-- Custom styles for this template-->
   <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
   <link href="{{ asset('datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 
   <link rel="stylesheet" type="text/css" href="{{ asset('dist/css/dropify.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ asset('dist/fonts/*') }}">
@@ -65,8 +66,8 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-black py-2 collapse-inner rounded">
             <a class="collapse-item text-blue" href="{{ url('/productos') }}"><i class="fa fa-user-tag"><b> Producto</b></i></a>
-            <a class="collapse-item text-blue" href="{{ url('/inventario') }}"><i class="fa fa-user-tag"><b> Inventario</b></i></a>            
-            <a class="collapse-item text-blue" href="{{ url('/factura') }}"><i class="fas fa-bell"></i><b> Facturación </b></i></a>
+            <a class="collapse-item text-blue" href="{{ url('/inventarios') }}"><i class="fa fa-user-tag"><b> Inventario</b></i></a>            
+            <a class="collapse-item text-blue" href="{{ url('/facturas') }}"><i class="fas fa-bell"></i><b> Facturación </b></i></a>
           </div>
         </div>        
       </li>

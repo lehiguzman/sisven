@@ -6,14 +6,14 @@
         <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <b>Ver sección registrada</b>
+                <b>Ver producto registrada</b>
               </div>
               <div class="card-body">   
                 <p class="card-text">    
-                <p><strong>Nombre : </strong>{{ $section->nombre }}</p>                  
-                <p><strong>Observación : </strong>{{ $section->observacion }}</p>                 
+                  <p><strong>ID : </strong>{{ $producto->id }}</p>                  
+                  <p><strong>Nombre : </strong>{{ $producto->nombre }}</p>
                 <br>
-                    <a href="{{ route('sections.index') }}"><button type="button" class="btn btn-primary float-right">Regresar</button></a>
+                    <a href="{{ route('productos.index') }}"><button type="button" class="btn btn-primary float-right">Regresar</button></a>
               </div>
             </div>
         </div>

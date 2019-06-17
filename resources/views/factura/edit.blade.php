@@ -8,15 +8,15 @@
                 <div class="card-header">
                     <div class="card-icon text-center">                                          
                         <i class="fa fa-edit fa-3x"></i>
-                        <h4 class="card-title">Editar Producto</h4>
+                        <h4 class="card-title">Editar Sección</h4>
                     </div> 
                     <div class="card-body">
 
                     <p class="card-text">
             
-                        {!! Form::model($producto, ['route' => ['productos.update', $producto->id] , 'method' => 'PUT']) !!}
+                        {!! Form::model($section, ['route' => ['sections.update', $section->id] , 'method' => 'PUT']) !!}
 
-                        @include('producto.partials.formEdit')
+                        @include('section.partials.formEdit')
 
                         {!! Form::close() !!}
 

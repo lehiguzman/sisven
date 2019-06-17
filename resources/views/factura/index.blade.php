@@ -10,9 +10,9 @@
                   <div class="card-header card-header-icon">
                     <div class="card-icon text-center shadow">                      
                       <i class="fas fa-id-card-alt" style='font-size:64px; color:#41B1A7;'> </i><br>
-                      <h4 class="card-title">Inventarios</h4>
+                      <h4 class="card-title">Facturación</h4>
                     </div>                    
-                    <a href="{{ route('inventarios.create') }}" class="btn btn-primary" style="float: center;">
+                    <a href="{{ route('facturas.create') }}" class="btn btn-primary" style="float: center;">
                         <i class="fas fa-plus"> Nuevo</i>
                     </a>
                     <div>
@@ -28,10 +28,7 @@
                         <thead class="text-primary">
                           <tr align="center">
                           <th>
-                            Producto
-                          </th>
-                          <th>
-                            Cantidad
+                            ID
                           </th>
                           <th style="border: none;" width="10%"></th>
                           <th style="border: none;" width="10%"></th>
@@ -39,31 +36,24 @@
                         </tr>
                         </thead>
                         <tbody>
-                        	@foreach($inventarios as $inventario)
+                        	@foreach($facturas as $factura)
                           <tr>
                             <td class="text-center">
-                              @foreach($productos as $producto)
-                                @if($producto->id == $inventario->producto_id)
-                                  {{ $producto->nombre }}
-                                @endif
-                              @endforeach
-                            </td> 
-                            <td class="text-center">
-                              {{ $inventario->cantidad }}
+                              {{ $factura->id }}
                             </td>           
                              <td style="border: none;" class="text-center">
-                                <a href="{{ route('inventarios.show' , $inventario->id) }}" class="btn btn-info">
+                                <a href="{{ route('facturas.show' , $factura->id) }}" class="btn btn-info">
                                   <i class="fas fa-eye"> Ver</i>
                                 </a>
                             </td> 
                             <td style="border: none;" class="text-center">
-                              <a href="{{ route('inventarios.edit' , $inventario->id) }}" class="btn btn-success">
+                              <a href="{{ route('facturas.edit' , $factura->id) }}" class="btn btn-success">
                                 <i class="fas fa-pencil-alt"> Editar</i>
                               </a>
                             </td>  
                             <td style="border: none;" class="text-center">
-                              {!! Form::open(['route' => ['inventarios.destroy' , $inventario->id], 'method' => 'DELETE']) !!}
-                                <button type="button" class="btn btn-danger" onclick="if(confirm('¿Desea borrar el Inventario?')) { this.type = 'submit'; }"><i class="fas fa-trash-alt"> Eliminar</i></button>
+                              {!! Form::open(['route' => ['facturas.destroy' , $factura->id], 'method' => 'DELETE']) !!}
+                                <button type="button" class="btn btn-danger" onclick="if(confirm('¿Desea borrar la Factura?')) { this.type = 'submit'; }"><i class="fas fa-trash-alt"> Eliminar</i></button>
                               {!! Form::close() !!}
                             </td>                                                      
                           </td>

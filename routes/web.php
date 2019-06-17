@@ -20,5 +20,9 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 ////////////////Administración////////////////////
-//Usuarios
 Route::resource('productos', 'ProductoController');
+Route::resource('inventarios', 'InventarioController');
+Route::resource('facturas', 'FacturaController');
+
+/////////////////////////////AJAX///////////////////////7
+Route::post('/ajaxProductos', 'FacturaController@ajaxProductos');

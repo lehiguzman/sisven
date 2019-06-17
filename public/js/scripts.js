@@ -30,94 +30,27 @@ $(document).ready(function() {
     {
     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
-        });
-
-  $('#tipo').change(function(e){ 
-
-        e.preventDefault();        
-        var tipo = $("select[name=tipo]").val();                    
-          if(tipo == '3')
-          {
-                $.ajax({                    
-                    url: '/ajaxRequest',
-                    type: 'POST',
-                    data:{tipo:tipo},
-                    dataType: 'html',
-                    success:function(data)
-                    {
-                        console.log(data);
-                        $('#divMaterias').replaceWith(data);
-                    }                    
-                });          
-          }else
-          {             
-            $('#divMaterias').hide();
-          }
   });
 
-  $('#checksemi').click(function(e){        
-        var cursa = $("input[name=seminario]").prop('checked'); 
-        var sem = $("input[name=seminario]").val();   
+  $('#addProducto').click(function(e)
+  {   
+        var producto_id = $("select[name=producto_id]").val();             
+        var cantidad = $("input[name=cantidad]").val();                    
+        var precio = $("input[name=precios]").val();                    
+        var iva = $("input[name=iva]").val();
         
-        if(cursa)
-        {          
           $.ajax({                    
-                    url: '/ajaxSelProfSem',
+                    url: '/ajaxProductos',
                     type: 'POST',
-                    data:{sem:sem},
+                    data:{producto_id:producto_id, cantidad:cantidad, precio:precio, iva:iva},
                     dataType: 'html',
                     success:function(data)
                     {
-                        console.log(data);
-                        $('#divSelProfSem').replaceWith(data);
-                    }                                      
-                }); 
-        }                         
-        else
-        {           
-          $('#divSelProfSem').hide();
-        }
-  });
-
-  $('#addAsig').click(function(e)
-  {                                    
-        var contenido = $("textarea[name=contenido]").val();             
-        var proposal_id = $("input[name=proposal_id]").val();                    
-        
-        var titulo = $("input[name=titulo]").val();   
-        if(titulo != "")
-        {
-        $.ajax({                    
-                    url: '/ajaxContenido',
-                    type: 'POST',
-                    data:{contenido:contenido, proposal_id:proposal_id},
-                    dataType: 'html',
-                    success:function(data)
-                    {
-                        console.log(data); 
-                        document.getElementById('contenido').value = "";
-                        $('#gridAsig').replaceWith(data);                        
+                        console.log(data);                         
+                        $('#gridProd').replaceWith(data);                        
                     }                    
                 });    
-        }
+        
   });
 
-  $('#selPeriod').change(function(e)
-  {                                    
-        var period_id = $("select[name=period_id]").val();             
-                
-        $.ajax({                    
-                    url: '/ajaxStudents',
-                    type: 'POST',
-                    data:{period_id:period_id},
-                    dataType: 'html',
-                    success:function(data)
-                    {
-                        console.log(data);                       
-                        $('#divSelStu').replaceWith(data);                        
-                    }                    
-                });            
-  });
-
-
-});
+}); //document ready function

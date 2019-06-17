@@ -3,21 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Producto;
+use App\Factura;
 use App\Inventario;
+use App\Producto;
+use App\Detalle_Factura;
 
-class InventarioController extends Controller
+class FacturaController extends Controller
 {
-   /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $inventarios = Inventario::orderBy('ID', 'DESC')->paginate();
-        $productos = Producto::orderBy('ID', 'DESC')->paginate();   
-        return view('inventario.index', compact('inventarios', 'productos'));
+        $facturas = Factura::orderBy('ID', 'DESC')->paginate();        
+        return view('factura.index', compact('facturas'));
     }
 
     /**
@@ -27,8 +28,9 @@ class InventarioController extends Controller
      */
     public function create()
     {
+        $facturas = Factura::orderBy('ID', 'DESC')->paginate();
         $productos = Producto::orderBy('ID', 'DESC')->paginate();
-        return view('inventario.create', compact('productos'));
+        return view('factura.create', compact('facturas', 'productos'));
     }
 
     /**
@@ -41,11 +43,12 @@ class InventarioController extends Controller
     {
           $data = $request;
 
-                Inventario::create([
-                    'producto_id' => $data['producto_id'],
-                    'cantidad' => $data['cantidad']
+                Factura::create([
+                    'impuesto' => $data['impuesto'],
+                    'montoTotal' => $data['montoTotal'],
+                    'descripcion' => $data['descripcion']
                 ]);
-        return redirect()->route('inventarios.index')->with('message', 'Inventario agregado exitosamente');
+        return redirect()->route('facturas.index')->with('message', 'Factura agregada exitosamente');
     }
 
     /**
@@ -56,9 +59,8 @@ class InventarioController extends Controller
      */
     public function show($id)
     {
-        $inventario = Inventario::find($id);
-        $producto = Producto::find($inventario->producto_id);
-        return view('inventario.show', compact('inventario', 'producto'));
+        $factura = Factura::find($id);
+        return view('factura.show', compact('factura'));
     }
 
     /**
@@ -69,9 +71,8 @@ class InventarioController extends Controller
      */
     public function edit($id)
     {
-        $inventario = Inventario::find($id);
-        $producto = Producto::find($inventario->producto_id);
-        return view('inventario.edit', compact('inventario', 'producto'));  
+        $factura = Factura::find($id);
+        return view('factura.edit', compact('factura'));  
     }
 
     /**
@@ -83,14 +84,14 @@ class InventarioController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $inventario = Inventario::find($id);
+        $factura = Factura::find($id);
         
-        if($inventario)
+        if($factura)
         {            
-            $inventario->cantidad = $request->cantidad;            
-            $inventario->save();         
+            $factura->cantidad = $request->cantidad;            
+            $factura->save();         
         }
-        return redirect()->route('inventarios.index')->with('message', 'Inventario actualizado exitosamente');    
+        return redirect()->route('facturas.index')->with('message', 'Factura actualizada exitosamente');    
     }
 
     /**
@@ -101,7 +102,7 @@ class InventarioController extends Controller
      */
     public function destroy($id)
     {
-        Inventario::destroy($id);
-        return redirect()->route('inventarios.index')->with('message', 'Inventario eliminado exitosamente');      
+        Factura::destroy($id);
+        return redirect()->route('facturas.index')->with('message', 'Factura eliminada exitosamente');      
     }    
 }
