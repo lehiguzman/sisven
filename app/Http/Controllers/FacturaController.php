@@ -105,4 +105,16 @@ class FacturaController extends Controller
         Factura::destroy($id);
         return redirect()->route('facturas.index')->with('message', 'Factura eliminada exitosamente');      
     }    
+
+    /**
+     * Ajax
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function ajaxProductos()
+    {
+        Factura::destroy($id);
+        return redirect()->route('facturas.index')->with('message', 'Factura eliminada exitosamente');      
+    }    
 }

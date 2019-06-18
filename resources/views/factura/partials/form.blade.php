@@ -14,7 +14,7 @@
 <hr>
 <div class="form-group row">
     <div class="col-md-3 form-inline justify-content-center">
-        <select name="producto_id" class="form-control{{ $errors->has('cliente') ? ' is-invalid' : '' }} col-sm-12">
+        <select name="producto_id" id="producto_id" class="form-control{{ $errors->has('cliente') ? ' is-invalid' : '' }} col-sm-12">
             <option value="" disabled selected>
                 -- Seleccione Producto --
             </option>
@@ -26,16 +26,16 @@
         </select>
     </div>
     <div class="col-md-2 form-inline justify-content-center">
-        <input type="text" name="cantidad" placeholder="Cantidad" class="form-control{{ $errors->has('cantidad') ? ' is-invalid' : '' }} col-sm-8" }}>
+        <input type="text" id="cantidad" name="cantidad" placeholder="Cantidad" class="form-control{{ $errors->has('cantidad') ? ' is-invalid' : '' }} col-sm-8" }}>
     </div>
     <div class="col-md-3 form-inline justify-content-center">
-        <input type="text" name="precio" placeholder="Precio del producto" class="form-control{{ $errors->has('cliente') ? ' is-invalid' : '' }} col-sm-12" }}>
+        <input type="text" name="precio" id="precio" placeholder="Precio del producto" class="form-control{{ $errors->has('cliente') ? ' is-invalid' : '' }} col-sm-12" }}>
     </div>
     <div class="col-md-2 form-inline justify-content-center">
-        <input type="text" name="iva" placeholder="IVA" class="form-control{{ $errors->has('cliente') ? ' is-invalid' : '' }} col-sm-12" }}>
+        <input type="text" name="iva" id="iva" placeholder="IVA" class="form-control{{ $errors->has('cliente') ? ' is-invalid' : '' }} col-sm-12" }}>
     </div>
     <div class="col-md-2 form-inline justify-content-center">
-        <button type="button" class="btn btn-primary btn-user" id="addProducto">
+        <button type="button" class="btn btn-primary btn-user" onclick="agregaProducto()">
                 Agregar
         </button> 
     </div>
@@ -44,6 +44,27 @@
     <div class="col-md-12 form-inline justify-content-center bg-primary text-white">PRODUCTOS A FACTURAR
     </div>
 <hr>
+<div id="tabla">
+    <table id="tablaProductos" width="100%" border="1">
+        <tr>
+            <td width="30%">
+                Producto
+            </td>
+            <td width="15%">
+                Cantidad
+            </td>
+            <td width="30%">
+                Monto Unitario
+            </td>
+            <td width="20%">
+                IVA
+            </td>        
+            <td width="5%" >                
+                sel
+            </td>    
+        </tr>
+    </table>    
+</div>
 <div class="form-group row">
     <div class="col-md-12 form-inline justify-content-center">
     <input id="impuesto" type="text" class="form-control{{ $errors->has('impuesto') ? ' is-invalid' : '' }} col-sm-6" name="impuesto" value="{{ old('impuesto') }}" placeholder="impuesto" required autofocus>
@@ -85,5 +106,67 @@
         </a>  
     </div>                            
 </div> 
+
+<script type="text/javascript">   
+    function agregaProducto()
+    {        
+        var tabla = document.getElementById('tablaProductos');
+
+        var fila = document.createElement('tr');
+        fila.setAttribute("width", "100%");
+
+        var columnaProducto = document.createElement('td');
+        columnaProducto.setAttribute("width", "30%");
+        var columnaCantidad = document.createElement('td');
+        columnaCantidad.setAttribute("width", "15%");
+        var columnaPrecio = document.createElement('td');
+        columnaPrecio.setAttribute("width", "25%");
+        var columnaIva = document.createElement('td');
+        columnaIva.setAttribute("width", "20%");
+        var columnaSel = document.createElement('td');
+        columnaSel.setAttribute("width", "5%");
+
+        var tablaFila = tabla.appendChild(fila);
+        var tablaProducto = tablaFila.appendChild(columnaProducto);
+            tablaProducto.setAttribute("align", "center");
+        var tablaCantidad = tablaFila.appendChild(columnaCantidad);
+            tablaCantidad.setAttribute("align", "center");
+        var tablaPrecio = tablaFila.appendChild(columnaPrecio);
+            tablaPrecio.setAttribute("align", "center");
+        var tablaIva = tablaFila.appendChild(columnaIva);
+            tablaIva.setAttribute("align", "center");
+        var tablaSel = tablaFila.appendChild(columnaSel);
+            tablaSel.setAttribute("align", "center");            
+                
+        var selectProductos = document.getElementById('producto_id');
+        var textCantidad = document.getElementById("cantidad");
+        var textPrecio = document.getElementById("precio");
+        var textIva = document.getElementById("iva");
+
+        var textoProducto = document.createTextNode(selectProductos.options[selectProductos.selectedIndex].text);
+        var textoCantidad = document.createTextNode(textCantidad.value);
+        var textoPrecio = document.createTextNode(textPrecio.value);
+        var textoIva = document.createTextNode(textIva.value);
+        var botonEliminar = document.createElement('button'); 
+        botonEliminar.setAttribute("onclick", "Elimina(this)"); 
+        botonEliminar.setAttribute("value", document.getElementById('producto_id').value); 
+        botonEliminar.setAttribute("class", "btn-danger"); 
+        var textEliminar = document.createTextNode("X")
+        botonEliminar.appendChild(textEliminar);
+
+        tablaProducto.appendChild(textoProducto);
+        tablaCantidad.appendChild(textoCantidad);
+        tablaPrecio.appendChild(textoPrecio);
+        tablaIva.appendChild(textoIva);
+        tablaSel.appendChild(botonEliminar);
+    }
+
+    function Elimina(e)
+    {
+        var tabla = document.getElementById('tablaProductos');
+
+        alert(tabla.rows.length - 1);
+    }
+</script>
   
   

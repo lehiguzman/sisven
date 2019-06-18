@@ -47,7 +47,7 @@ $(document).ready(function() {
                     success:function(data)
                     {
                         console.log(data);                         
-                        $('#gridProd').replaceWith(data);                        
+                        $('#divListaProductos').replaceWith(data);
                     }                    
                 });    
         
