@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Factura;
 use App\Inventario;
 use App\Producto;
-use App\Detalle_Factura;
+use App\Detalle_factura;
 
 class FacturaController extends Controller
 {
@@ -43,11 +43,24 @@ class FacturaController extends Controller
     {
           $data = $request;
 
-                Factura::create([
+                $factura = Factura::create([
+                    'cliente' => $data['cliente'],
                     'impuesto' => $data['impuesto'],
                     'montoTotal' => $data['montoTotal'],
                     'descripcion' => $data['descripcion']
-                ]);
+                ]);                
+
+                for ($i=0; $i < count($data['producto_id']); $i++) 
+                {                 
+                    Detalle_factura::create([
+                    'factura_id' => $factura->id,
+                    'producto_id' => $data['producto_id'][$i],
+                    'precio' => $data['precio'][$i],
+                    'cantidad' => $data['cantidad'][$i],
+                    'iva' => $data['iva'][$i]
+                    ]);
+                }        
+
         return redirect()->route('facturas.index')->with('message', 'Factura agregada exitosamente');
     }
 
@@ -101,18 +114,6 @@ class FacturaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        Factura::destroy($id);
-        return redirect()->route('facturas.index')->with('message', 'Factura eliminada exitosamente');      
-    }    
-
-    /**
-     * Ajax
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function ajaxProductos()
     {
         Factura::destroy($id);
         return redirect()->route('facturas.index')->with('message', 'Factura eliminada exitosamente');      

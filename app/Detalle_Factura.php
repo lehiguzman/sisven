@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Detalle_Factura extends Model
+class Detalle_factura extends Model
 {
      /**
      * The attributes that are mass assignable.

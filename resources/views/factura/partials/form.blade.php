@@ -1,6 +1,6 @@
 <div class="form-group row">
     <div class="col-md-12 form-inline justify-content-center">
-    <input id="cliente" type="text" class="form-control{{ $errors->has('cliente') ? ' is-invalid' : '' }} col-sm-6" name="cliente" value="{{ old('cliente') }}" placeholder="Ingrese nombre de cliente" required autofocus>
+    <input id="cliente"  name="cliente" type="text" class="form-control{{ $errors->has('cliente') ? ' is-invalid' : '' }} col-sm-6" value="{{ old('cliente') }}" placeholder="Ingrese nombre de cliente" required autofocus>
         @if ($errors->has('cliente'))
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $errors->first('cliente') }}</strong>
@@ -14,7 +14,7 @@
 <hr>
 <div class="form-group row">
     <div class="col-md-3 form-inline justify-content-center">
-        <select name="producto_id" id="producto_id" class="form-control{{ $errors->has('cliente') ? ' is-invalid' : '' }} col-sm-12">
+        <select  id="producto" name="producto" class="form-control{{ $errors->has('producto') ? ' is-invalid' : '' }} col-sm-12">
             <option value="" disabled selected>
                 -- Seleccione Producto --
             </option>
@@ -29,10 +29,10 @@
         <input type="text" id="cantidad" name="cantidad" placeholder="Cantidad" class="form-control{{ $errors->has('cantidad') ? ' is-invalid' : '' }} col-sm-8" }}>
     </div>
     <div class="col-md-3 form-inline justify-content-center">
-        <input type="text" name="precio" id="precio" placeholder="Precio del producto" class="form-control{{ $errors->has('cliente') ? ' is-invalid' : '' }} col-sm-12" }}>
+        <input type="text" id="precio" name="precio"  placeholder="Precio del producto" class="form-control{{ $errors->has('cliente') ? ' is-invalid' : '' }} col-sm-12" }}>
     </div>
     <div class="col-md-2 form-inline justify-content-center">
-        <input type="text" name="iva" id="iva" placeholder="IVA" class="form-control{{ $errors->has('cliente') ? ' is-invalid' : '' }} col-sm-12" }}>
+        <input type="text" id="iva" name="iva" placeholder="IVA" class="form-control{{ $errors->has('cliente') ? ' is-invalid' : '' }} col-sm-12" }}>
     </div>
     <div class="col-md-2 form-inline justify-content-center">
         <button type="button" class="btn btn-primary btn-user" onclick="agregaProducto()">
@@ -110,10 +110,19 @@
 <script type="text/javascript">   
     function agregaProducto()
     {        
+        
+        var selectProductos = document.getElementById('producto');
+        var textCantidad = document.getElementById("cantidad");
+        var textPrecio = document.getElementById("precio");
+        var textIva = document.getElementById("iva");
+
         var tabla = document.getElementById('tablaProductos');
 
         var fila = document.createElement('tr');
         fila.setAttribute("width", "100%");
+        fila.setAttribute("id", selectProductos.value);
+        fila.setAttribute("name", selectProductos.value);
+        var tablaFila = tabla.appendChild(fila);
 
         var columnaProducto = document.createElement('td');
         columnaProducto.setAttribute("width", "30%");
@@ -126,7 +135,7 @@
         var columnaSel = document.createElement('td');
         columnaSel.setAttribute("width", "5%");
 
-        var tablaFila = tabla.appendChild(fila);
+        
         var tablaProducto = tablaFila.appendChild(columnaProducto);
             tablaProducto.setAttribute("align", "center");
         var tablaCantidad = tablaFila.appendChild(columnaCantidad);
@@ -136,12 +145,8 @@
         var tablaIva = tablaFila.appendChild(columnaIva);
             tablaIva.setAttribute("align", "center");
         var tablaSel = tablaFila.appendChild(columnaSel);
-            tablaSel.setAttribute("align", "center");            
-                
-        var selectProductos = document.getElementById('producto_id');
-        var textCantidad = document.getElementById("cantidad");
-        var textPrecio = document.getElementById("precio");
-        var textIva = document.getElementById("iva");
+            tablaSel.setAttribute("align", "center");                     
+        
 
         var textoProducto = document.createTextNode(selectProductos.options[selectProductos.selectedIndex].text);
         var textoCantidad = document.createTextNode(textCantidad.value);
@@ -149,7 +154,7 @@
         var textoIva = document.createTextNode(textIva.value);
         var botonEliminar = document.createElement('button'); 
         botonEliminar.setAttribute("onclick", "Elimina(this)"); 
-        botonEliminar.setAttribute("value", document.getElementById('producto_id').value); 
+        botonEliminar.setAttribute("value", document.getElementById('producto').value); 
         botonEliminar.setAttribute("class", "btn-danger"); 
         var textEliminar = document.createTextNode("X")
         botonEliminar.appendChild(textEliminar);
@@ -159,13 +164,46 @@
         tablaPrecio.appendChild(textoPrecio);
         tablaIva.appendChild(textoIva);
         tablaSel.appendChild(botonEliminar);
+
+        //Campos a enviar a base de datos
+        var hiddenProducto = document.createElement('input');
+        var inputProducto = tablaFila.appendChild(hiddenProducto);
+            inputProducto.setAttribute('type', 'hidden');
+            inputProducto.setAttribute('name', 'producto_id[]');
+            inputProducto.setAttribute('value', document.getElementById('producto').value);
+
+        var hiddenCantidad = document.createElement('input');
+        var inputCantidad = tablaFila.appendChild(hiddenCantidad);
+            inputCantidad.setAttribute('type', 'hidden');
+            inputCantidad.setAttribute('name', 'cantidad[]');
+            inputCantidad.setAttribute('value', document.getElementById('cantidad').value);
+
+        var hiddenPrecio = document.createElement('input');
+        var inputPrecio = tablaFila.appendChild(hiddenPrecio);
+            inputPrecio.setAttribute('type', 'hidden');
+            inputPrecio.setAttribute('name', 'precio[]');
+            inputPrecio.setAttribute('value', document.getElementById('precio').value);
+
+        var hiddenIva = document.createElement('input');
+        var inputIva = tablaFila.appendChild(hiddenIva);
+            inputIva.setAttribute('type', 'hidden');
+            inputIva.setAttribute('name', 'iva[]');
+            inputIva.setAttribute('value', document.getElementById('iva').value);
+
     }
 
     function Elimina(e)
     {
-        var tabla = document.getElementById('tablaProductos');
+        var tabla = document.getElementById('tablaProductos');        
+        
+        for (var i = tabla.rows.length; i >= 0; i--) {
+            var fila = document.getElementById(i);
 
-        alert(tabla.rows.length - 1);
+            if(e.value == i)
+            {                
+                tabla.removeChild(fila);
+            }            
+        }        
     }
 </script>
   

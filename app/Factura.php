@@ -12,6 +12,6 @@ class Factura extends Model
      * @var array
      */
     protected $fillable = [
-        'impuesto', 'montoTotal', 'descripcion'
+       'cliente', 'impuesto', 'montoTotal', 'descripcion'
     ];
 }
