@@ -65,25 +65,13 @@
         </tr>
     </table>    
 </div>
-<div class="form-group row">
-    <div class="col-md-12 form-inline justify-content-center">
-    <input id="impuesto" type="text" class="form-control{{ $errors->has('impuesto') ? ' is-invalid' : '' }} col-sm-6" name="impuesto" value="{{ old('impuesto') }}" placeholder="impuesto" required autofocus>
-        @if ($errors->has('impuesto'))
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $errors->first('impuesto') }}</strong>
-            </span>
-        @endif
-    </div>
-</div>
-<div class="form-group row">
-    <div class="col-md-12 form-inline justify-content-center">
-    <input id="montoTotal" type="text" class="form-control{{ $errors->has('montoTotal') ? ' is-invalid' : '' }} col-sm-6" name="montoTotal" value="{{ old('montoTotal') }}" placeholder="Monto Total" required autofocus>
-        @if ($errors->has('montoTotal'))
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $errors->first('montoTotal') }}</strong>
-            </span>
-        @endif
-    </div>
+<div>
+    <h3>
+        Monto Total : <b id="montoTotal">0.00</b>
+    </h3>
+    <h3>
+        Monto Iva : <b id="montoIva">0.00</b>
+    </h3>
 </div>
 <div class="form-group row">
     <div class="col-md-12 form-inline justify-content-center">
@@ -109,8 +97,7 @@
 
 <script type="text/javascript">   
     function agregaProducto()
-    {        
-        
+    {                
         var selectProductos = document.getElementById('producto');
         var textCantidad = document.getElementById("cantidad");
         var textPrecio = document.getElementById("precio");
@@ -149,15 +136,20 @@
         
 
         var textoProducto = document.createTextNode(selectProductos.options[selectProductos.selectedIndex].text);
-        var textoCantidad = document.createTextNode(textCantidad.value);
-        var textoPrecio = document.createTextNode(textPrecio.value);
-        var textoIva = document.createTextNode(textIva.value);
+        var textoCantidad = document.createTextNode(textCantidad.value);        
+                var textPrecio = parseFloat(textPrecio.value);
+        var textoPrecio = document.createTextNode(textPrecio.toFixed(2));
+                var textIva = parseFloat(textIva.value);
+        var textoIva = document.createTextNode(textIva.toFixed(2));
         var botonEliminar = document.createElement('button'); 
         botonEliminar.setAttribute("onclick", "Elimina(this)"); 
         botonEliminar.setAttribute("value", document.getElementById('producto').value); 
         botonEliminar.setAttribute("class", "btn-danger"); 
         var textEliminar = document.createTextNode("X")
         botonEliminar.appendChild(textEliminar);
+
+        actualizaTotal(textPrecio);
+        actualizaIva(textIva);
 
         tablaProducto.appendChild(textoProducto);
         tablaCantidad.appendChild(textoCantidad);
@@ -203,9 +195,25 @@
             //alert("Fila seleccionada "+ e.value + " fila recorrido : "+ filaId);            
             if(e.value == filaId)
             {                   
-                tabla.removeChild(fila);
+                tabla.removeChild(fila);                
             }
         }        
+    }
+
+    function actualizaTotal(precio)
+    {
+        var montoTotal = document.getElementById("montoTotal");       
+        var monto = parseFloat(montoTotal.innerHTML);        
+        var total = precio + monto;
+        montoTotal.innerHTML = total.toFixed(2);
+    }
+
+    function actualizaIva(iva)
+    {
+        var montoIva = document.getElementById("montoIva");       
+        var monto = parseFloat(montoIva.innerHTML);        
+        var total = iva + monto;
+        montoIva.innerHTML = total.toFixed(2);
     }
 </script>
   
