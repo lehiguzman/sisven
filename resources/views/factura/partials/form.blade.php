@@ -194,15 +194,17 @@
 
     function Elimina(e)
     {
-        var tabla = document.getElementById('tablaProductos');        
-        
-        for (var i = tabla.rows.length; i >= 0; i--) {
-            var fila = document.getElementById(i);
-
-            if(e.value == i)
-            {                
+        var tabla = document.getElementById('tablaProductos');
+                
+        for (var i = tabla.rows.length-1; i > 0; i--) {
+            var fila = tabla.rows[i];
+            var filaId = tabla.rows[i].id;
+            
+            //alert("Fila seleccionada "+ e.value + " fila recorrido : "+ filaId);            
+            if(e.value == filaId)
+            {                   
                 tabla.removeChild(fila);
-            }            
+            }
         }        
     }
 </script>
