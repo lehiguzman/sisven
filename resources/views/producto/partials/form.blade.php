@@ -8,6 +8,16 @@
         @endif
     </div>
 </div>
+<div class="form-group row">
+    <div class="col-md-12 form-inline justify-content-center">
+    <input id="iva" name="iva" type="text" class="form-control{{ $errors->has('nombre') ? ' is-invalid' : '' }} col-sm-6"  value="{{ old('nombre') }}" placeholder="Ingrese Nombre de Producto" required autofocus>
+        @if ($errors->has('nombre'))
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $errors->first('nombre') }}</strong>
+            </span>
+        @endif
+    </div>
+</div>
 <div class="form-group row mb-0">
     <div class="col-md-12 form-inline justify-content-center">
         <button type="submit" rel="tooltip" class="btn btn-info" value="{{ __('Registrar') }}">

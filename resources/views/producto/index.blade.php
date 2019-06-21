@@ -30,6 +30,9 @@
                           <th>
                             Nombre
                           </th>
+                          <th>
+                            Iva
+                          </th>
                           <th style="border: none;" width="10%"></th>
                           <th style="border: none;" width="10%"></th>
                           <th style="border: none;" width="10%"></th>
@@ -40,6 +43,9 @@
                           <tr>
                             <td class="text-center">
                               {{ $producto->nombre }}
+                            </td>
+                             <td class="text-center">
+                              {{ $producto->iva }}
                             </td>           
                              <td style="border: none;" class="text-center">
                                 <a href="{{ route('productos.show' , $producto->id) }}" class="btn btn-info">

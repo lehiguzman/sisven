@@ -32,22 +32,19 @@ $(document).ready(function() {
     }
   });
 
-  $('#addProducto').click(function(e)
+  $('#producto').change(function(e)
   {   
-        var producto_id = $("select[name=producto_id]").val();             
-        var cantidad = $("input[name=cantidad]").val();                    
-        var precio = $("input[name=precios]").val();                    
-        var iva = $("input[name=iva]").val();
-        
+        var producto = $("select[name=producto]").val();
+            
           $.ajax({                    
                     url: '/ajaxProductos',
                     type: 'POST',
-                    data:{producto_id:producto_id, cantidad:cantidad, precio:precio, iva:iva},
+                    data:{producto:producto},
                     dataType: 'html',
                     success:function(data)
                     {
                         console.log(data);                         
-                        $('#divListaProductos').replaceWith(data);
+                        $('#divIvaOculto').replaceWith(data);
                     }                    
                 });    
         

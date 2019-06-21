@@ -39,6 +39,9 @@
                 Agregar
         </button> 
     </div>
+    <div id="divIvaOculto">
+        
+    </div>
 </div>
 <hr>
     <div class="col-md-12 form-inline justify-content-center bg-primary text-white">PRODUCTOS A FACTURAR
@@ -69,9 +72,9 @@
     <h3>
         Monto Total : <b id="montoTotal">0.00</b>
     </h3>
-    <h3>
+    <h4>
         Monto Iva : <b id="montoIva">0.00</b>
-    </h3>
+    </h4>
 </div>
 <div class="form-group row">
     <div class="col-md-12 form-inline justify-content-center">
@@ -210,7 +213,7 @@
 
     function actualizaIva(iva)
     {
-        var montoIva = document.getElementById("montoIva");       
+        var montoIva = document.getElementById("montoIva");
         var monto = parseFloat(montoIva.innerHTML);        
         var total = iva + monto;
         montoIva.innerHTML = total.toFixed(2);

@@ -117,5 +117,20 @@ class FacturaController extends Controller
     {
         Factura::destroy($id);
         return redirect()->route('facturas.index')->with('message', 'Factura eliminada exitosamente');      
-    }    
+    } 
+
+    /**
+     * Ajax de porcentaje de IVA
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function ajaxProductos(Request $request)
+    {
+        $data = $request;
+        
+        $producto = Producto::find($data['producto']);
+
+        return view('factura.ajax.iva', compact('producto'));
+    }     
 }
