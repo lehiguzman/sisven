@@ -39,7 +39,8 @@ class ProductoController extends Controller
           $data = $request;
 
                 Producto::create([
-                    'nombre' => $data['nombre']                    
+                    'nombre' => $data['nombre'],
+                    'iva' => $data['iva']
                 ]);
         return redirect()->route('productos.index')->with('message', 'Producto agregado exitosamente');
     }
@@ -81,7 +82,8 @@ class ProductoController extends Controller
         
         if($producto)
         {
-            $producto->nombre = $request->nombre;            
+            $producto->nombre = $request->nombre;
+            $producto->iva = $request->iva;
             $producto->save();         
         }
         return redirect()->route('productos.index')->with('message', 'Producto actualizado exitosamente');    

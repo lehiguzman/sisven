@@ -14,7 +14,7 @@
 <hr>
 <div class="form-group row">
     <div class="col-md-3 form-inline justify-content-center">
-        <select  id="producto" name="producto" class="form-control{{ $errors->has('producto') ? ' is-invalid' : '' }} col-sm-12">
+        <select  id="producto" name="producto" class="form-control{{ $errors->has('producto') ? ' is-invalid' : '' }} col-sm-12" onchange="verificaExistente(this)">
             <option value="" disabled selected>
                 -- Seleccione Producto --
             </option>
@@ -29,13 +29,14 @@
         <input type="text" id="cantidad" name="cantidad" placeholder="Cantidad" class="form-control{{ $errors->has('cantidad') ? ' is-invalid' : '' }} col-sm-8" }}>
     </div>
     <div class="col-md-3 form-inline justify-content-center">
-        <input type="text" id="precio" name="precio"  placeholder="Precio del producto" class="form-control{{ $errors->has('cliente') ? ' is-invalid' : '' }} col-sm-12" }}>
+        <input type="text" id="precio" name="precio" placeholder="Precio del producto" class="form-control{{ $errors->has('cliente') ? ' is-invalid' : '' }} col-sm-12" }} 
+        onblur="calculaIva()">
     </div>
     <div class="col-md-2 form-inline justify-content-center">
-        <input type="text" id="iva" name="iva" placeholder="IVA" class="form-control{{ $errors->has('cliente') ? ' is-invalid' : '' }} col-sm-12" }}>
+        <input type="text" id="iva" name="iva" placeholder="IVA" class="form-control{{ $errors->has('iva') ? ' is-invalid' : '' }} col-sm-12" }} disabled="disabled">
     </div>
     <div class="col-md-2 form-inline justify-content-center">
-        <button type="button" class="btn btn-primary btn-user" onclick="agregaProducto()">
+        <button type="button" class="btn btn-primary btn-user" onclick="calculaIva(); agregaProducto();">
                 Agregar
         </button> 
     </div>
@@ -68,7 +69,8 @@
         </tr>
     </table>    
 </div>
-<div>
+<br><br>
+<div align="right">
     <h3>
         Monto Total : <b id="montoTotal">0.00</b>
     </h3>
@@ -105,6 +107,18 @@
         var textCantidad = document.getElementById("cantidad");
         var textPrecio = document.getElementById("precio");
         var textIva = document.getElementById("iva");
+
+        //alert(selectProductos.value);
+        //alert(textCantidad.value);
+        //alert(textPrecio.value);
+
+        if(!verificaExistente(selectProductos))
+        {
+            alert("true");
+        }else {
+            alert("false");
+        }
+
 
         var tabla = document.getElementById('tablaProductos');
 
@@ -151,8 +165,8 @@
         var textEliminar = document.createTextNode("X")
         botonEliminar.appendChild(textEliminar);
 
-        actualizaTotal(textPrecio);
-        actualizaIva(textIva);
+        actualizaTotal(textPrecio, "S");
+        actualizaIva(textIva, "S");       
 
         tablaProducto.appendChild(textoProducto);
         tablaCantidad.appendChild(textoCantidad);
@@ -185,7 +199,6 @@
             inputIva.setAttribute('type', 'hidden');
             inputIva.setAttribute('name', 'iva[]');
             inputIva.setAttribute('value', document.getElementById('iva').value);
-
     }
 
     function Elimina(e)
@@ -194,30 +207,86 @@
                 
         for (var i = tabla.rows.length-1; i > 0; i--) {
             var fila = tabla.rows[i];
-            var filaId = tabla.rows[i].id;  
-                var filaPre = fila;
-                console.log(filaPre.childNodes[7].value);
+            var filaId = tabla.rows[i].id;                  
+            //Montos para ser restados de los totales 
+            var textPrecio = parseFloat(fila.childNodes[7].value);
+            var textIva = parseFloat(fila.childNodes[8].value);            
+
             if(e.value == filaId)
             {                   
+                actualizaTotal(textPrecio, "R");
+                actualizaIva(textIva, "R");
                 tabla.removeChild(fila);           
             }
         }        
     }
 
-    function actualizaTotal(precio)
+    function actualizaTotal(precio, accion)
     {
         var montoTotal = document.getElementById("montoTotal");       
         var monto = parseFloat(montoTotal.innerHTML);        
-        var total = precio + monto;
+
+        if(accion == "S")
+        {
+            var total = monto + precio;    
+        }
+        else if(accion == "R")
+        {
+            var total = monto - precio;       
+        }
+        
         montoTotal.innerHTML = total.toFixed(2);
     }
 
-    function actualizaIva(iva)
+    function calculaIva()
+    {
+        var cantidad = parseFloat(document.getElementById("cantidad").value);
+        var precio = parseFloat(document.getElementById("precio").value);        
+        var porcIva = document.getElementById("ivaOculto").value;
+
+        var iva = ((precio * cantidad) * porcIva) / 100;
+
+        document.getElementById("iva").value = iva;
+    }
+
+    function actualizaIva(iva, accion)
     {
         var montoIva = document.getElementById("montoIva");
         var monto = parseFloat(montoIva.innerHTML);        
-        var total = iva + monto;
+        if(accion == "S")
+        {
+            var total = monto + iva;
+        }
+        else if(accion == "R")
+        {
+            var total = monto - iva;   
+        }
+
         montoIva.innerHTML = total.toFixed(2);
+    }
+
+    function verificaExistente(e)
+    {        
+        var tabla = document.getElementById('tablaProductos');
+        var productoId = e.value;
+        var check = true;
+
+            if(e.value == "")
+            {
+                alert("Debe seleccionar un producto");
+                document.getElementById("producto").focus();
+            }
+
+            for (var i = 1; i < tabla.rows.length; i++) 
+            {
+                if(productoId == tabla.rows[i].id)
+                {
+                    alert("El producto ya ha sido agregado");
+                    document.getElementById("producto").value = "";
+                    check = false;
+                }
+            }
+        return check;
     }
 </script>
   
