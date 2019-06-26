@@ -177,6 +177,7 @@
         var inputPrecio = tablaFila.appendChild(hiddenPrecio);
             inputPrecio.setAttribute('type', 'hidden');
             inputPrecio.setAttribute('name', 'precio[]');
+            inputPrecio.setAttribute('id', 'pre');
             inputPrecio.setAttribute('value', document.getElementById('precio').value);
 
         var hiddenIva = document.createElement('input');
@@ -193,12 +194,12 @@
                 
         for (var i = tabla.rows.length-1; i > 0; i--) {
             var fila = tabla.rows[i];
-            var filaId = tabla.rows[i].id;
-            
-            //alert("Fila seleccionada "+ e.value + " fila recorrido : "+ filaId);            
+            var filaId = tabla.rows[i].id;  
+                var filaPre = fila;
+                console.log(filaPre.childNodes[7].value);
             if(e.value == filaId)
             {                   
-                tabla.removeChild(fila);                
+                tabla.removeChild(fila);           
             }
         }        
     }
