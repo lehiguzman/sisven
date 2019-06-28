@@ -73,7 +73,9 @@ class FacturaController extends Controller
     public function show($id)
     {
         $factura = Factura::find($id);
-        return view('factura.show', compact('factura'));
+        $detalle_facturas = Detalle_factura::where('factura_id', '=', $factura->id)->get();
+        $productos = Producto::orderBy('ID','ASC')->paginate();        
+        return view('factura.show', compact('factura', 'detalle_facturas', 'productos'));
     }
 
     /**
