@@ -72,10 +72,12 @@
 <br><br>
 <div align="right">
     <h3>
-        Monto Total : <b id="montoTotal">0.00</b>
+        Monto Total : <b id="montoTotalPrint">0.00</b>
+        <input type="hidden" id="montoTotal" name="montoTotal"></input>
     </h3>
     <h4>
-        Monto Iva : <b id="montoIva">0.00</b>
+        Monto Iva : <b id="montoIvaPrint">0.00</b>
+        <input type="hidden" id="impuesto" name="impuesto"></input>
     </h4>
 </div>
 <div class="form-group row">
@@ -108,97 +110,89 @@
         var textPrecio = document.getElementById("precio");
         var textIva = document.getElementById("iva");
 
-        //alert(selectProductos.value);
-        //alert(textCantidad.value);
-        //alert(textPrecio.value);
+        if(verificaExistente(selectProductos))
+        {          
+            var tabla = document.getElementById('tablaProductos');
 
-        if(!verificaExistente(selectProductos))
-        {
-            alert("true");
-        }else {
-            alert("false");
+            var fila = document.createElement('tr');
+            fila.setAttribute("width", "100%");
+            fila.setAttribute("id", selectProductos.value);
+            fila.setAttribute("name", selectProductos.value);
+
+            var tablaFila = tabla.appendChild(fila);
+
+            var columnaProducto = document.createElement('td');
+            columnaProducto.setAttribute("width", "30%");
+            var columnaCantidad = document.createElement('td');
+            columnaCantidad.setAttribute("width", "15%");
+            var columnaPrecio = document.createElement('td');
+            columnaPrecio.setAttribute("width", "25%");
+            var columnaIva = document.createElement('td');
+            columnaIva.setAttribute("width", "20%");
+            var columnaSel = document.createElement('td');
+            columnaSel.setAttribute("width", "5%");
+
+            
+            var tablaProducto = tablaFila.appendChild(columnaProducto);
+                tablaProducto.setAttribute("align", "center");
+            var tablaCantidad = tablaFila.appendChild(columnaCantidad);
+                tablaCantidad.setAttribute("align", "center");
+            var tablaPrecio = tablaFila.appendChild(columnaPrecio);
+                tablaPrecio.setAttribute("align", "center");
+            var tablaIva = tablaFila.appendChild(columnaIva);
+                tablaIva.setAttribute("align", "center");
+            var tablaSel = tablaFila.appendChild(columnaSel);
+                tablaSel.setAttribute("align", "center");                     
+            
+
+            var textoProducto = document.createTextNode(selectProductos.options[selectProductos.selectedIndex].text);
+            var textoCantidad = document.createTextNode(textCantidad.value);        
+                    var textPrecio = parseFloat(textPrecio.value);
+            var textoPrecio = document.createTextNode(textPrecio.toFixed(2));
+                    var textIva = parseFloat(textIva.value);
+            var textoIva = document.createTextNode(textIva.toFixed(2));
+            var botonEliminar = document.createElement('button'); 
+            botonEliminar.setAttribute("onclick", "Elimina(this)"); 
+            botonEliminar.setAttribute("value", document.getElementById('producto').value); 
+            botonEliminar.setAttribute("class", "btn-danger"); 
+            var textEliminar = document.createTextNode("X")
+            botonEliminar.appendChild(textEliminar);
+
+            actualizaTotal(textPrecio, "S");
+            actualizaIva(textIva, "S");       
+
+            tablaProducto.appendChild(textoProducto);
+            tablaCantidad.appendChild(textoCantidad);
+            tablaPrecio.appendChild(textoPrecio);
+            tablaIva.appendChild(textoIva);
+            tablaSel.appendChild(botonEliminar);
+
+            //Campos a enviar a base de datos
+            var hiddenProducto = document.createElement('input');
+            var inputProducto = tablaFila.appendChild(hiddenProducto);
+                inputProducto.setAttribute('type', 'hidden');
+                inputProducto.setAttribute('name', 'producto_id[]');
+                inputProducto.setAttribute('value', document.getElementById('producto').value);
+
+            var hiddenCantidad = document.createElement('input');
+            var inputCantidad = tablaFila.appendChild(hiddenCantidad);
+                inputCantidad.setAttribute('type', 'hidden');
+                inputCantidad.setAttribute('name', 'cantidad[]');
+                inputCantidad.setAttribute('value', document.getElementById('cantidad').value);
+
+            var hiddenPrecio = document.createElement('input');
+            var inputPrecio = tablaFila.appendChild(hiddenPrecio);
+                inputPrecio.setAttribute('type', 'hidden');
+                inputPrecio.setAttribute('name', 'precio[]');
+                inputPrecio.setAttribute('id', 'pre');
+                inputPrecio.setAttribute('value', document.getElementById('precio').value);
+
+            var hiddenIva = document.createElement('input');
+            var inputIva = tablaFila.appendChild(hiddenIva);
+                inputIva.setAttribute('type', 'hidden');
+                inputIva.setAttribute('name', 'iva[]');
+                inputIva.setAttribute('value', document.getElementById('iva').value);
         }
-
-
-        var tabla = document.getElementById('tablaProductos');
-
-        var fila = document.createElement('tr');
-        fila.setAttribute("width", "100%");
-        fila.setAttribute("id", selectProductos.value);
-        fila.setAttribute("name", selectProductos.value);
-        var tablaFila = tabla.appendChild(fila);
-
-        var columnaProducto = document.createElement('td');
-        columnaProducto.setAttribute("width", "30%");
-        var columnaCantidad = document.createElement('td');
-        columnaCantidad.setAttribute("width", "15%");
-        var columnaPrecio = document.createElement('td');
-        columnaPrecio.setAttribute("width", "25%");
-        var columnaIva = document.createElement('td');
-        columnaIva.setAttribute("width", "20%");
-        var columnaSel = document.createElement('td');
-        columnaSel.setAttribute("width", "5%");
-
-        
-        var tablaProducto = tablaFila.appendChild(columnaProducto);
-            tablaProducto.setAttribute("align", "center");
-        var tablaCantidad = tablaFila.appendChild(columnaCantidad);
-            tablaCantidad.setAttribute("align", "center");
-        var tablaPrecio = tablaFila.appendChild(columnaPrecio);
-            tablaPrecio.setAttribute("align", "center");
-        var tablaIva = tablaFila.appendChild(columnaIva);
-            tablaIva.setAttribute("align", "center");
-        var tablaSel = tablaFila.appendChild(columnaSel);
-            tablaSel.setAttribute("align", "center");                     
-        
-
-        var textoProducto = document.createTextNode(selectProductos.options[selectProductos.selectedIndex].text);
-        var textoCantidad = document.createTextNode(textCantidad.value);        
-                var textPrecio = parseFloat(textPrecio.value);
-        var textoPrecio = document.createTextNode(textPrecio.toFixed(2));
-                var textIva = parseFloat(textIva.value);
-        var textoIva = document.createTextNode(textIva.toFixed(2));
-        var botonEliminar = document.createElement('button'); 
-        botonEliminar.setAttribute("onclick", "Elimina(this)"); 
-        botonEliminar.setAttribute("value", document.getElementById('producto').value); 
-        botonEliminar.setAttribute("class", "btn-danger"); 
-        var textEliminar = document.createTextNode("X")
-        botonEliminar.appendChild(textEliminar);
-
-        actualizaTotal(textPrecio, "S");
-        actualizaIva(textIva, "S");       
-
-        tablaProducto.appendChild(textoProducto);
-        tablaCantidad.appendChild(textoCantidad);
-        tablaPrecio.appendChild(textoPrecio);
-        tablaIva.appendChild(textoIva);
-        tablaSel.appendChild(botonEliminar);
-
-        //Campos a enviar a base de datos
-        var hiddenProducto = document.createElement('input');
-        var inputProducto = tablaFila.appendChild(hiddenProducto);
-            inputProducto.setAttribute('type', 'hidden');
-            inputProducto.setAttribute('name', 'producto_id[]');
-            inputProducto.setAttribute('value', document.getElementById('producto').value);
-
-        var hiddenCantidad = document.createElement('input');
-        var inputCantidad = tablaFila.appendChild(hiddenCantidad);
-            inputCantidad.setAttribute('type', 'hidden');
-            inputCantidad.setAttribute('name', 'cantidad[]');
-            inputCantidad.setAttribute('value', document.getElementById('cantidad').value);
-
-        var hiddenPrecio = document.createElement('input');
-        var inputPrecio = tablaFila.appendChild(hiddenPrecio);
-            inputPrecio.setAttribute('type', 'hidden');
-            inputPrecio.setAttribute('name', 'precio[]');
-            inputPrecio.setAttribute('id', 'pre');
-            inputPrecio.setAttribute('value', document.getElementById('precio').value);
-
-        var hiddenIva = document.createElement('input');
-        var inputIva = tablaFila.appendChild(hiddenIva);
-            inputIva.setAttribute('type', 'hidden');
-            inputIva.setAttribute('name', 'iva[]');
-            inputIva.setAttribute('value', document.getElementById('iva').value);
     }
 
     function Elimina(e)
@@ -223,8 +217,9 @@
 
     function actualizaTotal(precio, accion)
     {
-        var montoTotal = document.getElementById("montoTotal");       
-        var monto = parseFloat(montoTotal.innerHTML);        
+        var montoTotalPrint = document.getElementById("montoTotalPrint");
+        var montoTotal = document.getElementById("montoTotal");
+        var monto = parseFloat(montoTotalPrint.innerHTML);        
 
         if(accion == "S")
         {
@@ -235,7 +230,8 @@
             var total = monto - precio;       
         }
         
-        montoTotal.innerHTML = total.toFixed(2);
+        montoTotalPrint.innerHTML = total.toFixed(2);
+        montoTotal.value = total.toFixed(2);
     }
 
     function calculaIva()
@@ -251,8 +247,9 @@
 
     function actualizaIva(iva, accion)
     {
-        var montoIva = document.getElementById("montoIva");
-        var monto = parseFloat(montoIva.innerHTML);        
+        var montoIvaPrint = document.getElementById("montoIvaPrint");
+        var impuesto = document.getElementById("impuesto");
+        var monto = parseFloat(montoIvaPrint.innerHTML);        
         if(accion == "S")
         {
             var total = monto + iva;
@@ -262,7 +259,8 @@
             var total = monto - iva;   
         }
 
-        montoIva.innerHTML = total.toFixed(2);
+        montoIvaPrint.innerHTML = total.toFixed(2);
+        impuesto.value = total.toFixed(2);
     }
 
     function verificaExistente(e)
@@ -275,6 +273,7 @@
             {
                 alert("Debe seleccionar un producto");
                 document.getElementById("producto").focus();
+                check = false;
             }
 
             for (var i = 1; i < tabla.rows.length; i++) 
