@@ -50,10 +50,10 @@ $(document).ready(function() {
         
   });
 
-  $('#buttonProducto').click(function(e)
+  $('#btnProducto').click(function(e)
   {   
         var factura = $("input[name=factura_id]").val();
-            alert(factura);
+            
           $.ajax({                    
                     url: '/ajaxProducto',
                     type: 'POST',
@@ -67,5 +67,24 @@ $(document).ready(function() {
                 });
                 
   });
+
+  $('#btnEliminaProducto').click(function(e)
+  {   
+        var factura = $("input[name=factura_id]").val();
+            
+          $.ajax({                    
+                    url: '/ajaxProducto',
+                    type: 'POST',
+                    data:{producto:producto},
+                    dataType: 'html',
+                    success:function(data)
+                    {
+                        console.log(data);                         
+                        $('#divProducto').replaceWith(data);
+                    }                    
+                });
+                
+  });
+
 
 }); //document ready function
