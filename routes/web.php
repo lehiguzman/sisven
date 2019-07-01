@@ -25,4 +25,4 @@ Route::resource('inventarios', 'InventarioController');
 Route::resource('facturas', 'FacturaController');
 
 /////////////////////////////AJAX///////////////////////7
-Route::post('/ajaxProductos', 'FacturaController@ajaxProductos');
+Route::post('/ajaxIva', 'FacturaController@ajaxIva');

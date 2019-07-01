@@ -37,7 +37,7 @@ $(document).ready(function() {
         var producto = $("select[name=producto]").val();
             
           $.ajax({                    
-                    url: '/ajaxProductos',
+                    url: '/ajaxIva',
                     type: 'POST',
                     data:{producto:producto},
                     dataType: 'html',
@@ -48,6 +48,24 @@ $(document).ready(function() {
                     }                    
                 });    
         
+  });
+
+  $('#buttonProducto').click(function(e)
+  {   
+        var factura = $("input[name=factura_id]").val();
+            alert(factura);
+          $.ajax({                    
+                    url: '/ajaxProducto',
+                    type: 'POST',
+                    data:{producto:producto},
+                    dataType: 'html',
+                    success:function(data)
+                    {
+                        console.log(data);                         
+                        $('#divProducto').replaceWith(data);
+                    }                    
+                });
+                
   });
 
 }); //document ready function

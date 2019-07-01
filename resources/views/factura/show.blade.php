@@ -55,7 +55,7 @@
                         {{ number_format($detalle_factura->iva, 2) }}
                       </td>
                       <td width="15%" align="center">
-                        {{ ($detalle_factura->cantidad * $detalle_factura->precio) + $detalle_factura->iva }}
+                        {{ number_format(($detalle_factura->cantidad * $detalle_factura->precio) + $detalle_factura->iva, 2) }}
                       </td>
                     </tr>
                   @endforeach

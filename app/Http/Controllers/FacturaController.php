@@ -87,7 +87,9 @@ class FacturaController extends Controller
     public function edit($id)
     {
         $factura = Factura::find($id);
-        return view('factura.edit', compact('factura'));  
+        $detalle_facturas = Detalle_factura::where('factura_id', '=', $factura->id)->get();
+        $productos = Producto::orderBy('ID', 'ASC')->paginate();
+        return view('factura.edit', compact('factura', 'detalle_facturas', 'productos'));
     }
 
     /**
@@ -127,7 +129,7 @@ class FacturaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function ajaxProductos(Request $request)
+    public function ajaxIva(Request $request)
     {
         $data = $request;
         
