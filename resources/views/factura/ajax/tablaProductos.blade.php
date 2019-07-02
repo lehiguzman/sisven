@@ -1,4 +1,4 @@
-<div id="tablaProductos">
+<div id="divTablaProductos">
     <table id="tablaProductos" width="100%" border="1">
         <tr>
             <td width="30%">
@@ -36,9 +36,22 @@
                     {{ number_format($detalle_factura->iva, 2, ".", "") }}
                 </td>
                 <td width="15%" align="center">
-                    <button class="btn-danger" value="{{ $detalle_factura->id }}" onclick="elimina(this)">X</button>
+                     <button class="btn-danger" id="btnEliminaProducto" name="detalle_factura" value="{{ $detalle_factura->id }}">X</button>
                 </td>
+                <input type="hidden" name="detalle_id" id="detalle_id" value="{{ $detalle_factura->id }}">
             </tr>
         @endforeach
     </table>
+    <br><br>
+<div align="right">
+    <h3>
+        Monto Total : <b id="montoTotalPrint">{{ number_format($factura->montoTotal, 2, ".", "") }}</b>
+        <input type="hidden" id="montoTotal" name="montoTotal" 
+        value="{{ number_format($factura->montoTotal, 2, ".", "") }}"></input>
+    </h3>
+    <h4>
+        Monto Iva : <b id="montoIvaPrint">{{ number_format($factura->impuesto, 2, ".", "") }}</b>
+        <input type="hidden" id="impuesto" name="impuesto" value="{{ number_format($factura->impuesto, 2, ".", "") }}"></input>
+    </h4>
+</div>
 </div>

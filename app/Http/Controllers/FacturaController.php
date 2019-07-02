@@ -105,9 +105,13 @@ class FacturaController extends Controller
         
         if($factura)
         {            
-            $factura->cantidad = $request->cantidad;            
-            $factura->save();         
+            $factura->cliente = $request->cliente;
+            $factura->montoTotal = $request->montoTotal;
+            $factura->impuesto = $request->impuesto;
+            $factura->descripcion = $request->descripcion;            
+            $factura->save();
         }
+
         return redirect()->route('facturas.index')->with('message', 'Factura actualizada exitosamente');    
     }
 
@@ -137,4 +141,46 @@ class FacturaController extends Controller
 
         return view('factura.ajax.iva', compact('producto'));
     }     
+
+    /**
+     * Ajax de tabla de productos
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function ajaxActualizaProductos(Request $request)
+    {
+        $data = $request;        
+        
+        $montoTotal = 0;
+        $impuesto = 0;
+
+        $detalle_factura = Detalle_factura::updateOrCreate(
+                ['factura_id' => $data['factura'],'producto_id' => $data['producto']],
+                ['cantidad' => $data['cantidad'],
+                 'precio' => $data['precio'],
+                 'cantidad' => $data['cantidad'],
+                 'iva' => $data['iva']
+                ]);
+
+        $detalle_facturas = Detalle_factura::where('factura_id', '=', $data['factura'])->get();
+
+          foreach ($detalle_facturas as $detalle_factura) {
+           $montoTotal += $detalle_factura->precio;
+           $impuesto += $detalle_factura->iva;           
+          }
+
+        $factura = Factura::find($data['factura']);
+
+            if($factura)
+            {
+                $factura->montoTotal = $montoTotal;
+                $factura->impuesto = $impuesto;
+                $factura->save();
+            }
+
+        $productos = Producto::orderBy('ID', 'ASC')->paginate();
+        
+        return view('factura.ajax.tablaProductos', compact('detalle_facturas', 'productos', 'impuesto', 'factura'));
+    } 
 }

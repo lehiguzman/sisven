@@ -26,3 +26,5 @@ Route::resource('facturas', 'FacturaController');
 
 /////////////////////////////AJAX///////////////////////7
 Route::post('/ajaxIva', 'FacturaController@ajaxIva');
+Route::post('/ajaxActualizaProductos', 'FacturaController@ajaxActualizaProductos');
+
